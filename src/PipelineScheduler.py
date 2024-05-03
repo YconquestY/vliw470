@@ -223,15 +223,25 @@ class PipelineScheduler:
         for bundle in self.schedule[bb0_finished_cycle:bb1_finished_cycle]:
             for inst in bundle.insts:
                 for dep in depTable[inst.id].loopInvariantDeps:
-                    loopInvariantProducers.add(dep.producer_id)
+                    if (depTable[dep.producer_id].renamedDest is None):
+                        tmp = freshReg()
+                        prod_cycle = finished_cycle[dep.producer_id] - 3 if iCache[dep.producer_id].opcode == 'mulu' else finished_cycle[dep.producer_id] - 1
+                        for inst in self.schedule[prod_cycle].insts:
+                            if (inst.id == dep.producer_id):
+                                inst.rd = tmp
+                                depTable[inst.id].renamedDest = tmp
+                        #.rd = tmp
+                        #depTable[dep.producer_id].renamedDest = tmp
+                    #loopInvariantProducers.add(dep.producer_id)
         # 2.2.2 rename producer rd of loop-invariant dependency according to
         #       instruction order of BB0
-        for bundle in self.schedule[ :bb0_finished_cycle]:
-            for inst in bundle.insts:
-                if inst.id in loopInvariantProducers:
-                    tmp = freshReg()
-                    inst.rd = tmp
-                    depTable[inst.id].renamedDest = tmp
+        # for bundle in self.schedule[ :bb0_finished_cycle]:
+        #     for inst in bundle.insts:
+        #         if depTable[inst.id].loopInvariantDeps:
+        #             #tmp = freshReg()
+        #             #inst.rd = tmp
+        #             #depTable[inst.id].renamedDest = tmp
+        #             inst.rd = depTable[inst.id].renamedDest
         ''' step 2.3 link operands to renamed registers '''
         # 2.3.1 loop invariant dependency: go back to BB1 to replace loop-
         #                                  invariant rs with renamed registers
