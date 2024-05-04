@@ -48,13 +48,11 @@ class PipelineScheduler:
     def ii(self) -> int:
         ''' compute lower bound of II '''        
         def quotient(t: tuple[int, int]) -> int:
-            #print(ceil(t[0] / t[1]))
             return ceil(t[0] / t[1])
 
         tmp =  max(map(quotient,
                        zip(astuple(self.p.instCount),
                            astuple(self.p.exUnitCount))))
-        #print('ii:', tmp)
         return tmp
     
     def ii(self):
@@ -112,7 +110,6 @@ class PipelineScheduler:
                 deps = depTable[i].localDeps     \
                      + depTable[i].interLoopDeps \
                      + depTable[i].loopInvariantDeps
-                #print('finished_cycle:', finished_cycle)
                 earliest_cycle = max((finished_cycle[dep.producer_id] for dep in deps
                                                                           if dep.producer_id is not None),
                                      default=bb0_finished_cycle)
@@ -353,7 +350,6 @@ class PipelineScheduler:
         if bb1.stop - bb1.start == 0:
             while (len(bb0Schedule) > 0 and len(bb0Schedule[-1].insts) ==0 ):
                 bb0Schedule.pop()
-        #print('BB0 finishes at', bb0_finished_cycle, 'length:', len(bb0Schedule))
         movInst1 = _Instruction(opcode = 'mov', id = -1, rd = Reg(RegType.PREDICATE, 32), imm = 1)
         movInst2 = _Instruction(opcode = 'mov', id = -1, rd = Reg(RegType.EC, None), imm = numStage - 1)
         
@@ -367,7 +363,6 @@ class PipelineScheduler:
 
         
         bb1Schedule: list[Bundle] = []
-        print('ii:', self.ii, 'numStage:', numStage)
         for idx in range(self.ii):
             bundle = Bundle()
             for stage in range(numStage):

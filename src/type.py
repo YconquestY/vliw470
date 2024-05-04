@@ -78,8 +78,6 @@ class _Instruction:
                    imm = instruction.imm)
 
     def __str__(self):
-        # if (self.opcode == 'mov'):
-        #     print(self.rd)
         if self.opcode == 'add' or \
            self.opcode == 'sub' or \
            self.opcode == 'mulu' :
@@ -148,7 +146,6 @@ class Bundle:
                     lst.append(str(self.insts[i]))
                 except Exception as e:
                     print(f"An error occurred: {e}")
-                    print(self.insts[i].opcode)
                     sys.exit()
                 i += 1
             else:
@@ -177,7 +174,6 @@ class Bundle:
                         lst.append(str(self.insts[i]))
                 except Exception as e:
                     print(f"An error occurred: {e}")
-                    print(self.insts[i])
                     sys.exit()
                 i += 1
             else:

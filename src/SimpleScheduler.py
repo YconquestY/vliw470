@@ -158,7 +158,6 @@ class SimpleScheduler:
                         self.schedule.insert(currCycle, Bundle())
                         self.bb1_finished_cycle += 1
                         self.bb2_finished_cycle += 1
-                #print(self.schedule[currCycle])
                 self.schedule[currCycle].insert(moveInst, InstClass.ALU)
             # only now do we schedule the loop instruction
             loop_inst = _Instruction.from_instruction(self.p.iCache[bb1.stop - 1], bb1.stop - 1)

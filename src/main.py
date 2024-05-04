@@ -30,15 +30,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args.input_path, args.simple_output_path, args.pip_output_path)
-
-
-    
-
-
-    
-
-    # with open(simple_output_path, 'w') as f:
-    #     json.dump(simple_data, f)
-
-    # with open(pip_output_path, 'w') as f:
-    #     json.dump(pip_data, f)
